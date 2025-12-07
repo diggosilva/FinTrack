@@ -11,7 +11,7 @@ class AddTransactionViewController: UIViewController {
     
     private let viewModel: AddTransactionViewModelProtocol
     
-    init(viewModel: AddTransactionViewModelProtocol) {
+    init(viewModel: AddTransactionViewModelProtocol = AddTransactionViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -70,6 +70,10 @@ class AddTransactionViewController: UIViewController {
         stack.spacing = 16
         return stack
     }()
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
