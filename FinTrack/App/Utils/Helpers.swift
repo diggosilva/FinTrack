@@ -18,6 +18,24 @@ extension UIViewController {
     }
 }
 
+extension Date {
+    func toMonthAndYear() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "pt_BR")
+        formatter.dateFormat = "MMMM/yyyy"
+        return formatter.string(from: self).capitalized
+    }
+}
+
+extension String {
+    func toDateFromMonthAndYear() -> Date {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "pt_BR")
+        formatter.dateFormat = "MMMM/yyyy"
+        return formatter.date(from: self) ?? Date.distantPast
+    }
+}
+
 // MARK: Methods
 
 func formatDateStyle(date: Date) -> String {
