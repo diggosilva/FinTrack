@@ -53,7 +53,7 @@ class AddTransactionViewController: UIViewController {
     private lazy var saveButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle(NSLocalizedString("Salvar", comment: "Teste de comentário"), for: .normal)
+        btn.setTitle("Salvar", for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.backgroundColor = .systemBlue
         btn.titleLabel?.font = .boldSystemFont(ofSize: 18)
@@ -119,11 +119,20 @@ class AddTransactionViewController: UIViewController {
 
 extension AddTransactionViewController: AddTransactionViewModelDelegate {
     func errorOccured(_ message: String) {
-        presentDSAlert(title: "Ops... ❌", message: message)
+        presentDSAlert(title: "Ops... ❌", message: message) { action in
+            self.clearTextFields()
+        }
     }
     
     func savedTransaction() {
-        presentDSAlert(title: "Tudo certo! ✅", message: "Transação salva com sucesso!")
+        presentDSAlert(title: "Tudo certo! ✅", message: "Transação salva com sucesso!") { action in
+            self.clearTextFields()
+        }
+    }
+    
+    private func clearTextFields() {
+        incomeTextField.text = ""
+        expenseTextField.text = ""
     }
 }
 

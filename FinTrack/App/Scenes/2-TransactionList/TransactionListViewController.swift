@@ -12,7 +12,7 @@ class TransactionListViewController: UIViewController {
     private let viewModel: TransactionListViewModelProtocol
     
     lazy var tableView: UITableView = {
-        let tv = UITableView()
+        let tv = UITableView(frame: .zero, style: .insetGrouped)
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.register(TransactionListCell.self, forCellReuseIdentifier: TransactionListCell.identifier)
         return tv
@@ -30,6 +30,10 @@ class TransactionListViewController: UIViewController {
         setupView()
         configureNavigationBar()
         configureDelegatesAndDataSources()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.loadTransactions()
         tableView.reloadData()
     }
@@ -64,15 +68,22 @@ class TransactionListViewController: UIViewController {
 }
 
 extension TransactionListViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.numberOfSections()
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfRows()
+        return viewModel.numberOfRows(in: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TransactionListCell.identifier, for: indexPath) as? TransactionListCell else { return UITableViewCell() }
-        let transaction = viewModel.transactionForRow(at: indexPath.row)
+        let transaction = viewModel.transactionForRow(in: indexPath.section, at: indexPath.row)
         cell.configure(transaction: transaction)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.titleForSection(at: section)
     }
 }
 
