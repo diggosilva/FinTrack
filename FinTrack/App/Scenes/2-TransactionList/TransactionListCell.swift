@@ -108,9 +108,9 @@ final class TransactionListCell: UITableViewCell {
         dateLabel.text = formatDateStyle(date: transaction.date)
         
         incomeImage.image = SFSymbols.upArrow
-        incomeLabel.text = "\(formatCurrency(transaction.income))"
+        incomeLabel.text = formatCurrency(transaction.income)
         
         expenseImage.image = SFSymbols.downArrow
-        expenseLabel.text = "\(formatCurrency(transaction.expense))"
+        expenseLabel.text = formatCurrency(transaction.expense)
     }
 }
