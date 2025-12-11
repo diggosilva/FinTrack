@@ -14,4 +14,5 @@ class SFSymbols {
     static let plusCircleFill = UIImage(systemName: "plus.circle.fill")
     static let chartBar = UIImage(systemName: "chart.bar")
     static let chartBarFill = UIImage(systemName: "chart.bar.fill")
+    static let dollarSign = UIImage(systemName: "dollarsign.arrow.trianglehead.counterclockwise.rotate.90")?.withTintColor(.label, renderingMode: .alwaysOriginal)
 }
