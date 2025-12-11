@@ -62,7 +62,7 @@ extension YearSummaryViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         var content = cell .defaultContentConfiguration()
-        content.image = SFSymbols.calendar
+        content.image = SFSymbols.dollarSign
         content.text = "Mês \(indexPath.row + 1)"
         content.secondaryText = "R$ 1000,00"
         
