@@ -9,10 +9,19 @@ import UIKit
 
 class YearSummaryViewController: UIViewController {
     
+    private let viewModel: YearSummaryViewModelProtocol
+    
+    init(viewModel: YearSummaryViewModelProtocol = YearSummaryViewModel(year: Calendar.current.component(.year, from: Date()))) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
     lazy var tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .insetGrouped)
         tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tv.register(YearSummaryCell.self, forCellReuseIdentifier: YearSummaryCell.identifier)
         return tv
     }()
     
@@ -55,18 +64,13 @@ class YearSummaryViewController: UIViewController {
 
 extension YearSummaryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 12
+        return viewModel.numberOfRows()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
-        var content = cell .defaultContentConfiguration()
-        content.image = SFSymbols.dollarSign
-        content.text = "Mês \(indexPath.row + 1)"
-        content.secondaryText = "R$ 1000,00"
-        
-        cell.contentConfiguration = content
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: YearSummaryCell.identifier, for: indexPath) as? YearSummaryCell else { return UITableViewCell() }
+        let monthSummary = viewModel.summaryForMonth(at: indexPath.row)
+        cell.configure(summary: monthSummary)
         return cell
     }
 }
@@ -74,6 +78,5 @@ extension YearSummaryViewController: UITableViewDataSource {
 extension YearSummaryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print("Clicou em \(indexPath.row + 1)")
     }
 }
