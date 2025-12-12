@@ -52,3 +52,21 @@ func formatCurrency(_ value: Double) -> String {
     guard let formattedString = formatter.string(from: NSNumber(value: value)) else { return "" }
     return formattedString
 }
+
+// MARK: Builder Components
+
+func buildIcon(systemImage: UIImage) -> UIImageView {
+    let iv = UIImageView()
+    iv.translatesAutoresizingMaskIntoConstraints = false
+    iv.image = systemImage
+    iv.contentMode = .scaleAspectFit
+    return iv
+}
+
+func buildLabel(size: CGFloat, textAlignment: NSTextAlignment = .left, weight: UIFont.Weight = .regular) -> UILabel {
+    let lbl = UILabel()
+    lbl.translatesAutoresizingMaskIntoConstraints = false
+    lbl.font = .systemFont(ofSize: size, weight: weight)
+    lbl.textAlignment = textAlignment
+    return lbl
+}

@@ -8,13 +8,22 @@
 import UIKit
 
 class SFSymbols {
-    static let upArrow = UIImage(systemName: "arrowshape.up.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal)
-    static let downArrow = UIImage(systemName: "arrowshape.down.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
-    static let plusCircle = UIImage(systemName: "plus.circle")
-    static let plusCircleFill = UIImage(systemName: "plus.circle.fill")
-    static let chartBar = UIImage(systemName: "chart.bar")
-    static let chartBarFill = UIImage(systemName: "chart.bar.fill")
-    static let dollarSign = UIImage(systemName: "dollarsign.arrow.trianglehead.counterclockwise.rotate.90")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-    static let calendar = UIImage(systemName: "calendar.circle")
-    static let calendarFill = UIImage(systemName: "calendar.circle.fill")
+    private static func symbol(_ name: String, tint: UIColor? = nil) -> UIImage {
+        let image = UIImage(systemName: name) ?? UIImage(systemName: "questionmark.circle")!
+        
+        if let tint {
+            return image.withTintColor(tint, renderingMode: .alwaysOriginal)
+        }
+        return image
+    }
+    
+    static let upArrow = symbol("arrowshape.up.fill", tint: .systemGreen)
+    static let downArrow = symbol("arrowshape.down.fill", tint: .systemRed)
+    static let plusCircle = symbol("plus.circle")
+    static let plusCircleFill = symbol("plus.circle.fill")
+    static let chartBar = symbol("chart.bar")
+    static let chartBarFill = symbol("chart.bar.fill")
+    static let dollarSign = symbol("dollarsign.arrow.trianglehead.counterclockwise.rotate.90", tint: .label)
+    static let calendar = symbol("calendar.circle")
+    static let calendarFill = symbol("calendar.circle.fill")
 }
