@@ -11,28 +11,11 @@ final class TransactionListCell: UITableViewCell {
     
     static let identifier = "TransactionListCell"
     
-    private lazy var dateLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        return label
-    }()
+    private lazy var dateLabel = buildLabel(size: 14, weight: .medium)
     
-    private lazy var incomeImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private lazy var incomeLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .systemGreen
-        return label
-    }()
-    
+    private lazy var incomeImage = buildIcon(systemImage: SFSymbols.upArrow)
+    private lazy var incomeLabel = buildLabel(size: 12)
+   
     private lazy var hStackIncome: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [incomeImage, incomeLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -41,20 +24,8 @@ final class TransactionListCell: UITableViewCell {
         return stackView
     }()
     
-    private lazy var expenseImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private lazy var expenseLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .systemRed
-        return label
-    }()
+    private lazy var expenseImage = buildIcon(systemImage: SFSymbols.downArrow)
+    private lazy var expenseLabel = buildLabel(size: 12)
     
     private lazy var hStackExpense: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [expenseImage, expenseLabel])
@@ -106,11 +77,9 @@ final class TransactionListCell: UITableViewCell {
     
     func configure(transaction: TransactionModel) {
         dateLabel.text = formatDateStyle(date: transaction.date)
-        
-        incomeImage.image = SFSymbols.upArrow
         incomeLabel.text = formatCurrency(transaction.income)
-        
-        expenseImage.image = SFSymbols.downArrow
+        incomeLabel.textColor = .systemGreen
         expenseLabel.text = formatCurrency(transaction.expense)
+        expenseLabel.textColor = .systemRed
     }
 }
