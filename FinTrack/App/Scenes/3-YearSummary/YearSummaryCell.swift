@@ -12,7 +12,7 @@ final class YearSummaryCell: UITableViewCell {
     static let identifier = "YearSummaryCell"
     
     lazy var monthLabel = buildLabel(size: 12, weight: .semibold)
-
+    
     lazy var movementImage = buildIcon(systemImage: SFSymbols.dollarSign)
     lazy var movementLabel = buildLabel(size: 12)
     
@@ -103,8 +103,10 @@ final class YearSummaryCell: UITableViewCell {
     
     func configure(summary: MonthSummary) {
         monthLabel.text = summary.month
-        incomeLabel.text = formatCurrency(summary.totalIncome)
-        expenseLabel.text = formatCurrency(summary.totalExpenses)
         movementLabel.text = formatCurrency(summary.movement)
+        incomeLabel.text = formatCurrency(summary.totalIncome)
+        incomeLabel.textColor = .systemGreen
+        expenseLabel.text = formatCurrency(summary.totalExpenses)
+        expenseLabel.textColor = .systemRed
     }
 }
