@@ -30,6 +30,11 @@ class YearSummaryViewController: UIViewController {
         setupView()
         configureNavigationBar()
         configureDelegatesAndDataSources()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.reloadData()
         tableView.reloadData()
     }
     
