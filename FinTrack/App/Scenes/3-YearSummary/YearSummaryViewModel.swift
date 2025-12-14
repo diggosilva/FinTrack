@@ -21,6 +21,7 @@ protocol YearSummaryViewModelProtocol {
     func updateYear(_ year: Int)
     func numberOfRows() -> Int
     func summaryForMonth(at index: Int) -> MonthSummary
+    func reloadData()
 }
 
 class YearSummaryViewModel: YearSummaryViewModelProtocol {
@@ -88,5 +89,10 @@ class YearSummaryViewModel: YearSummaryViewModelProtocol {
     
     func summaryForMonth(at index: Int) -> MonthSummary {
         return monthSummaries[index]
+    }
+    
+    func reloadData() {
+        transactions = repository.load()
+        updateYear(selectedYear)
     }
 }
