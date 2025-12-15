@@ -20,7 +20,11 @@ protocol AddTransactionViewModelProtocol: AnyObject {
 class AddTransactionViewModel: AddTransactionViewModelProtocol {
     
     weak var delegate: AddTransactionViewModelDelegate?
-    private let repository = TransactionRepository()
+    private let repository: TransactionRepositoryProtocol
+    
+    init(repository: TransactionRepositoryProtocol = TransactionRepository()) {
+        self.repository = repository
+    }
     
     func save(date: Date, incomeText: String?, expenseText: String?) {
         let hasIncome = !(incomeText?.isEmpty ?? true)

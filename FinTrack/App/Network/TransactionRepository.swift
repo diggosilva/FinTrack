@@ -7,7 +7,12 @@
 
 import Foundation
 
-final class TransactionRepository {
+protocol TransactionRepositoryProtocol: AnyObject {
+    func save(_ transactions: [TransactionModel])
+    func load() -> [TransactionModel]
+}
+
+final class TransactionRepository: TransactionRepositoryProtocol {
     
     private let userDefaults = UserDefaults.standard
     private let key = "transactions"
