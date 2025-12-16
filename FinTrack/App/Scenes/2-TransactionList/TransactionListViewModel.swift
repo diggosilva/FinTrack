@@ -25,9 +25,10 @@ final class TransactionListViewModel: TransactionListViewModelProtocol {
     
     private var sections: [SectionMonth] = []
     private(set) var transactions: [TransactionModel] = []
-    private let repository = TransactionRepository()
+    private let repository: TransactionRepositoryProtocol
     
-    init() {
+    init(repository: TransactionRepositoryProtocol = TransactionRepository()) {
+        self.repository = repository
         loadTransactions()
     }
     
