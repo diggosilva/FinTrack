@@ -60,7 +60,7 @@ final class AddTransactionViewModelTests: XCTestCase {
     }
 
     func testWhenHaveIncomeOnly_ExpectSaveAndNotify() {
-        let date = Date(timeIntervalSince1970: 1_700_000_000) // fixed date for comparison
+        let date = makeDate(year: 2025, month: 5, day: 25)
         let incomeText = "10.5"
 
         viewModel.save(date: date, incomeText: incomeText, expenseText: nil)
@@ -70,13 +70,13 @@ final class AddTransactionViewModelTests: XCTestCase {
 
         XCTAssertEqual(repository.savedTransactions.count, 1)
         let saved = repository.savedTransactions.first!
-        XCTAssertEqual(saved.income, 10.5, accuracy: 0.0001)
-        XCTAssertEqual(saved.expense, 0.0, accuracy: 0.0001)
-        XCTAssertEqual(saved.date.timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 0.001)
+        XCTAssertEqual(saved.income, 10.5)
+        XCTAssertEqual(saved.expense, 0.0)
+        XCTAssertEqual(saved.date, date)
     }
 
     func testWhenHaveExpenseOnly_ExpectSaveAndNotify() {
-        let date = Date(timeIntervalSince1970: 1_700_000_001)
+        let date = makeDate(year: 2025, month: 5, day: 26)
         let expenseText = "5.25"
 
         viewModel.save(date: date, incomeText: nil, expenseText: expenseText)
@@ -86,13 +86,13 @@ final class AddTransactionViewModelTests: XCTestCase {
 
         XCTAssertEqual(repository.savedTransactions.count, 1)
         let saved = repository.savedTransactions.first!
-        XCTAssertEqual(saved.income, 0.0, accuracy: 0.0001)
-        XCTAssertEqual(saved.expense, 5.25, accuracy: 0.0001)
-        XCTAssertEqual(saved.date.timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 0.001)
+        XCTAssertEqual(saved.income, 0.0)
+        XCTAssertEqual(saved.expense, 5.25)
+        XCTAssertEqual(saved.date, date)
     }
 
     func testWhenHaveBoth_ExpectSaveAndNotify() {
-        let date = Date(timeIntervalSince1970: 1_700_000_002)
+        let date = makeDate(year: 2025, month: 5, day: 27)
         let incomeText = "3"
         let expenseText = "2"
 
@@ -103,8 +103,8 @@ final class AddTransactionViewModelTests: XCTestCase {
 
         XCTAssertEqual(repository.savedTransactions.count, 1)
         let saved = repository.savedTransactions.first!
-        XCTAssertEqual(saved.income, 3.0, accuracy: 0.0001)
-        XCTAssertEqual(saved.expense, 2.0, accuracy: 0.0001)
-        XCTAssertEqual(saved.date.timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 0.001)
+        XCTAssertEqual(saved.income, 3.0)
+        XCTAssertEqual(saved.expense, 2.0)
+        XCTAssertEqual(saved.date, date)
     }
 }
