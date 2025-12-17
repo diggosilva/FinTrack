@@ -18,7 +18,17 @@ class YearSummaryViewController: UIViewController {
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    lazy var tableView: UITableView = {
+    private lazy var yearPicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .compact
+        picker.locale = Locale(identifier: "pt_BR")
+        picker.addTarget(self, action: #selector(yearDidChange), for: .valueChanged)
+        return picker
+    }()
+    
+    private lazy var tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .insetGrouped)
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.register(YearSummaryCell.self, forCellReuseIdentifier: YearSummaryCell.identifier)
@@ -30,6 +40,7 @@ class YearSummaryViewController: UIViewController {
         setupView()
         configureNavigationBar()
         configureDelegatesAndDataSources()
+        configureInitialYear()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,22 +59,33 @@ class YearSummaryViewController: UIViewController {
     }
     
     private func setupView() {
-        setHierarchy()
-        setConstraints()
-    }
-    
-    private func setHierarchy() {
-        view.addSubview(tableView)
         view.backgroundColor = .systemBackground
-    }
-    
-    private func setConstraints() {
+        view.addSubview(yearPicker)
+        view.addSubview(tableView)
+        
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            yearPicker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            yearPicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            tableView.topAnchor.constraint(equalTo: yearPicker.bottomAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    private func configureInitialYear() {
+        let calendar = Calendar.current
+        let date = calendar.date(from: DateComponents(year: viewModel.selectedYear)) ?? Date()
+        yearPicker.date = date
+    }
+
+    @objc private func yearDidChange() {
+        let calendar = Calendar.current
+        let selectedYear = calendar.component(.year, from: yearPicker.date)
+        
+        viewModel.updateYear(selectedYear)
+        tableView.reloadData()
     }
 }
 
