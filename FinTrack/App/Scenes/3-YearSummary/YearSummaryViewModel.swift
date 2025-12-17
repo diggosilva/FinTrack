@@ -22,6 +22,7 @@ protocol YearSummaryViewModelProtocol {
     func numberOfRows() -> Int
     func summaryForMonth(at index: Int) -> MonthSummary
     func reloadData()
+    var selectedYear: Int { get }
 }
 
 class YearSummaryViewModel: YearSummaryViewModelProtocol {
