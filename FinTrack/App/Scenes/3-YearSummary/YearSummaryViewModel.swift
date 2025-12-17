@@ -26,14 +26,15 @@ protocol YearSummaryViewModelProtocol {
 
 class YearSummaryViewModel: YearSummaryViewModelProtocol {
     
-    private let repository = TransactionRepository()
+    private let repository: TransactionRepositoryProtocol
     private var monthSummaries: [MonthSummary] = []
     private(set) var selectedYear: Int
     
     private var transactions: [TransactionModel] = []
     
-    init(year: Int) {
+    init(year: Int, repository: TransactionRepositoryProtocol = TransactionRepository()) {
         self.selectedYear = year
+        self.repository = repository
         transactions = repository.load()
         updateYear(year)
     }
