@@ -133,6 +133,7 @@ extension AddTransactionViewController: AddTransactionViewModelDelegate {
     private func clearTextFields() {
         incomeTextField.text = ""
         expenseTextField.text = ""
+        view.endEditing(true)
     }
 }
 
