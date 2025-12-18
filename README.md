@@ -20,7 +20,7 @@ This project was built exclusively for **study purposes**, focusing on UIKit bes
 
 | Register | Monthly Summary | Yearly Overview |
 | --- | --- | --- |
-| ![Register](https://github.com/user-attachments/assets/2307e75d-2a38-4be7-ab99-cfd62f6769b1) | ![Summary](https://github.com/user-attachments/assets/759a053a-a07b-41f5-94f7-02062a6e35e2) | ![Year](https://github.com/user-attachments/assets/16c485d4-f1fa-4c84-8841-8cd93c435d27) |
+| ![Register](https://github.com/user-attachments/assets/2307e75d-2a38-4be7-ab99-cfd62f6769b1) | ![Summary](https://github.com/user-attachments/assets/759a053a-a07b-41f5-94f7-02062a6e35e2) | ![Year](https://github.com/user-attachments/assets/994109b2-cc17-4b8c-ba44-22098f60a17e) |
 
 ---
 
