@@ -18,7 +18,6 @@ class AddTransactionViewController: UIViewController {
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    // DatePicker
     private lazy var datePicker: UIDatePicker = {
         let dp = UIDatePicker()
         dp.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +26,6 @@ class AddTransactionViewController: UIViewController {
         return dp
     }()
     
-    // IncomeTextField
     private lazy var incomeTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +36,6 @@ class AddTransactionViewController: UIViewController {
         return tf
     }()
     
-    // ExpenseTextField
     private lazy var expenseTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +46,6 @@ class AddTransactionViewController: UIViewController {
         return tf
     }()
     
-    // SaveButton
     private lazy var saveButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +58,6 @@ class AddTransactionViewController: UIViewController {
         return btn
     }()
     
-    // StackVertical
     private lazy var vStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [datePicker, incomeTextField, expenseTextField, saveButton])
         stack.translatesAutoresizingMaskIntoConstraints = false
