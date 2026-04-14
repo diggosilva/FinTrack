@@ -14,7 +14,8 @@ protocol AddTransactionViewModelDelegate: AnyObject {
 
 protocol AddTransactionViewModelProtocol: AnyObject {
     var delegate: AddTransactionViewModelDelegate? { get set }
-    func save(date: Date, incomeText: String?, expenseText: String?)
+    var transactionToEdit: TransactionModel? { get set }
+    func save(date: Date, incomeText: String?, incomeDescription: String?, expenseText: String?, expenseDescription: String?)
 }
 
 class AddTransactionViewModel: AddTransactionViewModelProtocol {
@@ -22,11 +23,13 @@ class AddTransactionViewModel: AddTransactionViewModelProtocol {
     weak var delegate: AddTransactionViewModelDelegate?
     private let repository: TransactionRepositoryProtocol
     
+    var transactionToEdit: TransactionModel?
+    
     init(repository: TransactionRepositoryProtocol = TransactionRepository()) {
         self.repository = repository
     }
     
-    func save(date: Date, incomeText: String?, expenseText: String?) {
+    func save(date: Date, incomeText: String?, incomeDescription: String?, expenseText: String?, expenseDescription: String?) {
         let hasIncome = !(incomeText?.isEmpty ?? true)
         let hasExpense = !(expenseText?.isEmpty ?? true)
         
@@ -35,31 +38,38 @@ class AddTransactionViewModel: AddTransactionViewModelProtocol {
             return
         }
         
-        var income: Double = 0.0
-        var expense: Double = 0.0
+        let cleanIncome = incomeText?.replacingOccurrences(of: ",", with: ".") ?? ""
+        let cleanExpense = expenseText?.replacingOccurrences(of: ",", with: ".") ?? ""
         
-        if hasIncome {
-            guard let incomeValue = Double(incomeText ?? "") else {
-                delegate?.errorOccured("Valor de entrada inválido.")
-                return
-            }
-            income = incomeValue
-        }
-        
-        if hasExpense {
-            guard let expenseValue = Double(expenseText ?? "") else {
-                delegate?.errorOccured("Valor de saída inválido.")
-                return
-            }
-            expense = expenseValue
-        }
-        
-        let transaction = TransactionModel(date: date, income: income, expense: expense)
+        let income = Double(cleanIncome) ?? 0.0
+        let expense = Double(cleanExpense) ?? 0.0
         
         var list = repository.load()
-        list.append(transaction)
-        repository.save(list)
         
+        if let editingTransaction = transactionToEdit {
+            if let index = list.firstIndex(where: { $0.id == editingTransaction.id }) {
+                let updatedTransaction = TransactionModel(
+                    id: editingTransaction.id, // Mantém o mesmo ID
+                    date: date,
+                    income: income,
+                    incomeDescription: incomeDescription,
+                    expense: expense,
+                    expenseDescription: expenseDescription
+                )
+                list[index] = updatedTransaction
+            }
+        } else {
+            let newTransaction = TransactionModel(
+                date: date,
+                income: income,
+                incomeDescription: incomeDescription,
+                expense: expense,
+                expenseDescription: expenseDescription
+            )
+            list.append(newTransaction)
+        }
+        
+        repository.save(list)
         delegate?.savedTransaction()
     }
 }

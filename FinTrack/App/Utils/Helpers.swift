@@ -63,10 +63,11 @@ func buildIcon(systemImage: UIImage) -> UIImageView {
     return iv
 }
 
-func buildLabel(size: CGFloat, textAlignment: NSTextAlignment = .left, weight: UIFont.Weight = .regular) -> UILabel {
+func buildLabel(size: CGFloat, textAlignment: NSTextAlignment = .left, weight: UIFont.Weight = .regular, numberOfLines: Int  = 1) -> UILabel {
     let lbl = UILabel()
     lbl.translatesAutoresizingMaskIntoConstraints = false
     lbl.font = .systemFont(ofSize: size, weight: weight)
     lbl.textAlignment = textAlignment
+    lbl.numberOfLines = numberOfLines
     return lbl
 }

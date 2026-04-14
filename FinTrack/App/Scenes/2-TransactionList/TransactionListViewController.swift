@@ -90,5 +90,13 @@ extension TransactionListViewController: UITableViewDataSource {
 extension TransactionListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let selectedTransaction = viewModel.transactionForRow(in: indexPath.section, at: indexPath.row)
+        
+        let addVM = AddTransactionViewModel()
+        addVM.transactionToEdit = selectedTransaction
+        
+        let vc = AddTransactionViewController(viewModel: addVM)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
