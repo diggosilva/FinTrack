@@ -15,23 +15,35 @@ final class TransactionListCell: UITableViewCell {
     
     private lazy var incomeImage = buildIcon(systemImage: SFSymbols.upArrow)
     private lazy var incomeLabel = buildLabel(size: 12)
+    private lazy var incomeDescriptionLabel: UILabel = {
+        let label = buildLabel(size: 12, textAlignment: .right, numberOfLines: 0)
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
    
     private lazy var hStackIncome: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [incomeImage, incomeLabel])
+        let stackView = UIStackView(arrangedSubviews: [incomeImage, incomeLabel, incomeDescriptionLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = 4
+        stackView.spacing = 8
+        stackView.alignment = .top // Mantém ícone e valor no topo se a descrição crescer
         return stackView
     }()
     
     private lazy var expenseImage = buildIcon(systemImage: SFSymbols.downArrow)
     private lazy var expenseLabel = buildLabel(size: 12)
+    private lazy var expenseDescriptionLabel: UILabel = {
+        let label = buildLabel(size: 12, textAlignment: .right, numberOfLines: 0)
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
     
     private lazy var hStackExpense: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [expenseImage, expenseLabel])
+        let stackView = UIStackView(arrangedSubviews: [expenseImage, expenseLabel, expenseDescriptionLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = 4
+        stackView.spacing = 8
+        stackView.alignment = .top // Mantém ícone e valor no topo se a descrição crescer
         return stackView
     }()
     
@@ -39,8 +51,8 @@ final class TransactionListCell: UITableViewCell {
         let stackView = UIStackView(arrangedSubviews: [dateLabel, hStackIncome, hStackExpense])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 4
-        stackView.alignment = .leading
+        stackView.spacing = 8
+        stackView.alignment = .fill
         return stackView
     }()
     
@@ -54,6 +66,7 @@ final class TransactionListCell: UITableViewCell {
     private func setupView() {
         setHierarchy()
         setConstraints()
+        configurePriorities()
     }
     
     private func setHierarchy() {
@@ -63,23 +76,51 @@ final class TransactionListCell: UITableViewCell {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             incomeImage.widthAnchor.constraint(equalToConstant: 16),
-            incomeImage.heightAnchor.constraint(equalTo: incomeImage.widthAnchor),
+            incomeImage.heightAnchor.constraint(equalToConstant: 16),
             
-            expenseImage.widthAnchor.constraint(equalTo: incomeImage.widthAnchor),
-            expenseImage.heightAnchor.constraint(equalTo: incomeImage.heightAnchor),
+            expenseImage.widthAnchor.constraint(equalToConstant: 16),
+            expenseImage.heightAnchor.constraint(equalToConstant: 16),
             
-            vStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            vStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             vStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             vStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            vStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            vStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
         ])
+    }
+    
+    private func configurePriorities() {
+        // Impede que os valores (R$) sejam "espremidos" (truncados)
+        incomeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        expenseLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        // Garante que eles não tentem esticar mais do que o necessário
+        incomeLabel.setContentHuggingPriority(.required, for: .horizontal)
+        expenseLabel.setContentHuggingPriority(.required, for: .horizontal)
+        
+        // Permite que a descrição cresça e empurre o layout
+        incomeDescriptionLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        expenseDescriptionLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
     
     func configure(transaction: TransactionModel) {
         dateLabel.text = formatDateStyle(date: transaction.date)
-        incomeLabel.text = formatCurrency(transaction.income)
+        
+        // Configuração de Entrada
+        let incomeValue = formatCurrency(transaction.income)
+        incomeLabel.text = incomeValue
         incomeLabel.textColor = .systemGreen
-        expenseLabel.text = formatCurrency(transaction.expense)
+        incomeDescriptionLabel.text = transaction.incomeDescription
+        
+        // Esconde a stack de entrada se não houver valor
+        hStackIncome.isHidden = transaction.income == 0
+        
+        // Configuração de Saída
+        let expenseValue = formatCurrency(transaction.expense)
+        expenseLabel.text = expenseValue
         expenseLabel.textColor = .systemRed
+        expenseDescriptionLabel.text = transaction.expenseDescription
+        
+        // Esconde a stack de saída se não houver valor
+        hStackExpense.isHidden = transaction.expense == 0
     }
 }
